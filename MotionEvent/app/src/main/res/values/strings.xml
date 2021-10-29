@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MotionEvent</string>
+    <string name="text_view_one">Motion Events from one point</string>
+    <string name="text_view_two">Motion Events from two points</string>
+</resources>
