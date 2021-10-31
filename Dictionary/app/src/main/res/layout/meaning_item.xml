@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textIsSelectable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parts of Speech"
+            android:textStyle="italic"
+            android:textColor="@color/purple_500"
+            android:layout_alignParentTop="true"
+            android:textSize="20sp"
+            android:id="@+id/partOfSpeech"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/definitionsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/partOfSpeech"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

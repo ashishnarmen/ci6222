@@ -1,97 +1,99 @@
 package com.ci6222.dictionary;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Context;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.Response;
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
+//import com.android.volley.RequestQueue;
+//import com.android.volley.VolleyError;
+//import com.android.volley.Response;
+//import com.android.volley.Request;
+//import com.android.volley.toolbox.JsonArrayRequest;
+//import com.android.volley.toolbox.Volley;
+import com.ci6222.dictionary.adapters.DictionaryEntryAdapter;
+import com.ci6222.dictionary.client.DictionaryClient;
+import com.ci6222.dictionary.model.DictionaryEntry;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
+import java.util.List;
+import java.util.Stack;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText etWord;
-    Button btnSearhWord;
-    TextView tvMeaning;
-    RequestQueue requestQueue;
+    Button btnSearchWord;
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
 
     String baseUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/";
     String url;
+
+    Stack<String> searchedWords = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         this.etWord = (EditText) findViewById(R.id.word);
-        this.btnSearhWord = (Button) findViewById(R.id.btn_search_word);
-        this.tvMeaning = (TextView) findViewById(R.id.tv_meaning);
-        this.tvMeaning.setMovementMethod(new ScrollingMovementMethod());
-
-        requestQueue = Volley.newRequestQueue(this);
+        this.btnSearchWord = (Button) findViewById(R.id.btn_search_word);
+        getMeaning(etWord.getText().toString());
     }
 
+    @Override
+    public void onBackPressed() {
+        if (searchedWords.size() < 2) {
+            super.onBackPressed();
+        } else {
+            searchedWords.pop();
+            etWord.setText(searchedWords.pop());
+            searchWordClicked(this.btnSearchWord);
+        }
+
+    }
     private void getMeaning(String word) {
         this.url = this.baseUrl + word;
 
-        JsonArrayRequest arrReq = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response.length() > 0) {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject jsonObj = response.getJSONObject(i);
-                            String repoName = jsonObj.get("word").toString();
-                            String lastUpdated = jsonObj.get("origin").toString();
-                            addToRepoList(repoName, lastUpdated);
-                        } catch (JSONException e) {
-                            Log.e("Volley", "Invalid JSON Object.");
-                        }
+        Call<List<DictionaryEntry>> call = DictionaryClient.getInstance().getDictionaryService().getDictionaryEntries(word);
+        call.enqueue(new Callback<List<DictionaryEntry>>() {
 
-                    }
-                } else {
-                    setRepoListText("No repos found.");
+            @Override
+            public void onResponse(Call<List<DictionaryEntry>> call, Response<List<DictionaryEntry>> response) {
+                List<DictionaryEntry> dictionaryEntryList = response.body();
+                if (dictionaryEntryList == null) {
+                    Toast.makeText(getApplicationContext(), "Unable to find the word", Toast.LENGTH_LONG).show();
+                    return;
                 }
+                recyclerView = (RecyclerView) findViewById(R.id.dictionaryEntriesView);
+                recyclerView.setHasFixedSize(true);
+                Context context = getApplicationContext();
+                layoutManager = new LinearLayoutManager(context);
+                adapter = new DictionaryEntryAdapter(dictionaryEntryList,context) ;
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+                searchedWords.add(word);
+           }
 
-            }
-        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                setRepoListText("Error while calling REST API");
-                Log.e("Volley", error.toString());
+            public void onFailure(Call<List<DictionaryEntry>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "An error has occurred", Toast.LENGTH_LONG).show();
             }
+
         });
-        requestQueue.add(arrReq);
-    }
-
-    private void clearMeaning() {
-        this.tvMeaning.setText("");
-    }
-
-    private void addToRepoList(String repoName, String lastUpdated) {
-        String strRow = repoName + " / " + lastUpdated;
-        String currentText = tvMeaning.getText().toString();
-        this.tvMeaning.setText(currentText + "\n\n" + strRow);
-    }
-
-    private void setRepoListText(String str) {
-        this.tvMeaning.setText(str);
     }
 
     public void searchWordClicked(View v) {
-        clearMeaning();
+        Utils.hideKeyboard(this);
         getMeaning(etWord.getText().toString());
     }
 }
