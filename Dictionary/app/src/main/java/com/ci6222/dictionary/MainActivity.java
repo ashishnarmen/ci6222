@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.etWord = (EditText) findViewById(R.id.word);
+        this.etWord = (EditText) findViewById(R.id.etWord);
         this.btnSearchWord = (Button) findViewById(R.id.btn_search_word);
         getMeaning(etWord.getText().toString());
     }

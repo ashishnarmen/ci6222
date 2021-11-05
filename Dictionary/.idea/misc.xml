@@ -7,12 +7,13 @@
         <entry key="../../../../../Library/Android/sdk/platforms/android-30/data/res/layout/simple_list_item_1.xml" value="0.3640625" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.37435897435897436" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.37435897435897436" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/definition_item.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/dictionary_entry.xml" value="0.3640625" />
         <entry key="app/src/main/res/layout/dictionary_entry_item.xml" value="0.3120471014492754" />
         <entry key="app/src/main/res/layout/meaning_item.xml" value="0.20364583333333333" />
         <entry key="app/src/main/res/layout/phonetic_item.xml" value="0.22495274102079396" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.2930253623188406" />
       </map>
     </option>
   </component>

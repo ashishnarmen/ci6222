@@ -32,14 +32,4 @@ public class DictionaryClient {
     public DictionaryInterface getDictionaryService() {
         return dictionaryInterface;
     }
-
-    public static synchronized List<DictionaryEntry> getDictionaryEntries(String word) {
-        List<DictionaryEntry> dictionaryEntries = new ArrayList<>();
-        try {
-            dictionaryEntries =  DictionaryClient.getInstance().getDictionaryService().getDictionaryEntries(word).execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return dictionaryEntries;
-    }
 }
