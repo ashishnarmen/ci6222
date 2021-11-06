@@ -1,12 +1,6 @@
 package com.ci6222.dictionary.client;
 
 
-import com.ci6222.dictionary.model.DictionaryEntry;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

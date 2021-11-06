@@ -1,14 +1,15 @@
 package com.ci6222.dictionary;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.ci6222.dictionary.client.DictionaryClient;
 import com.ci6222.dictionary.client.DictionaryInterface;
 import com.ci6222.dictionary.model.DictionaryEntry;
 
-import java.io.IOException;
+import org.junit.Test;
+
 import java.util.List;
 
 /**
