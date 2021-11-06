@@ -90,7 +90,6 @@ public class UITests {
         pressBack();
         waitToFetchWord();
         onView(withId(R.id.word)).check(matches(withText(defaultWord)));
-
     }
 
 }

@@ -35,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-
-    String baseUrl = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-    String url;
-
     Stack<String> searchedWords = new Stack<>();
 
     @Override
@@ -62,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void getMeaning(String word) {
-        this.url = this.baseUrl + word;
 
         Call<List<DictionaryEntry>> call = DictionaryClient.getInstance().getDictionaryService().getDictionaryEntries(word);
         call.enqueue(new Callback<List<DictionaryEntry>>() {
